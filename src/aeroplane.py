@@ -2,14 +2,58 @@ from typing import Any
 from dataclasses import dataclass
 import string
 
-@dataclass(eq=False)
+@dataclass(eq=False, init=False)
 class Aeroplane:
-    icao24: str
-    callsign: str | None
-    origin_country: str
-    baro_altitude: float| None
-    velocity: float| None
-    vertical_rate: float| None
+    __icao24: str
+    __callsign: str | None
+    __origin_country: str
+    __baro_altitude: float | None
+    __velocity: float | None
+    __vertical_rate: float | None
+
+    def __init__(
+        self,
+        icao24: str,
+        callsign: str | None,
+        origin_country: str,
+        baro_altitude: float | None,
+        velocity: float | None,
+        vertical_rate: float | None,
+    ) -> None:
+        self.__icao24 = icao24
+        self.__callsign = callsign
+        self.__origin_country = origin_country
+        self.__baro_altitude = baro_altitude
+        self.__velocity = velocity
+        self.__vertical_rate = vertical_rate
+
+        self.__post_init__()
+
+    # Публичный доступ к атрибутам
+
+    @property
+    def icao24(self) -> str:
+        return self.__icao24
+
+    @property
+    def callsign(self) -> str | None:
+        return self.__callsign
+
+    @property
+    def origin_country(self) -> str:
+        return self.__origin_country
+
+    @property
+    def baro_altitude(self) -> float | None:
+        return self.__baro_altitude
+
+    @property
+    def velocity(self) -> float | None:
+        return self.__velocity
+
+    @property
+    def vertical_rate(self) -> float | None:
+        return self.__vertical_rate
 
     @classmethod
     def cast_to_object_list(cls, opensky_response: dict[str, Any]) -> list["Aeroplane"]:
