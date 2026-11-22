@@ -5,3 +5,4 @@ __pycache__/
 111.py
 .coverage
 /htmlcov
+data/aeroplanes.json
