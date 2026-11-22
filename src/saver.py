@@ -23,18 +23,26 @@ class JSONSaver(BaseSaver):
                 data = json.load(file)
                 return data if isinstance(data, list) else []
 
-        except (json.JSONDecodeError, OSError):
-            return []
+
+        except json.JSONDecodeError as error:
+            raise ValueError(
+                f"Файл {self.__filename} содержит некорректный JSON"
+            ) from error
 
     def _write_file(self, data: list[dict[str, Any]]) -> None:
-        """Запись списка словарей в JSON"""
+        """Безопасная запись списка словарей в JSON"""
 
         directory = os.path.dirname(self.__filename)
+
         if directory:
             os.makedirs(directory, exist_ok=True)
 
-        with open(self.__filename, "w", encoding="utf-8") as file:
+        temp_filename = f"{self.__filename}.tmp"
+
+        with open(temp_filename, "w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
+
+        os.replace(temp_filename, self.__filename)
 
     @staticmethod
     def _aeroplane_to_dict(plane: Aeroplane) -> dict[str, Any]:

@@ -60,6 +60,7 @@ class Aeroplane:
         states = opensky_response.get("states") or []
         aeroplanes: list[Aeroplane] = []
 
+
         for state in states:
             if not state[2] or not state[2].strip():
                 continue
@@ -146,7 +147,5 @@ class Aeroplane:
         if self.velocity is not None and self.velocity < 0:
             raise ValueError("Скорость не может быть отрицательной")
 
-        # Проверка высоты
-        if self.baro_altitude is not None and self.baro_altitude < 0:
-            raise ValueError("Высота не может быть отрицательной")
+
 

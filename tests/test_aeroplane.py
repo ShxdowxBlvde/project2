@@ -77,10 +77,6 @@ def test_negative_velocity(aeroplane_factory):
         aeroplane_factory(velocity=-10)
 
 
-def test_negative_altitude(aeroplane_factory):
-    with pytest.raises(ValueError):
-        aeroplane_factory(baro_altitude=-100)
-
 
 def test_none_numeric_values(aeroplane_factory):
     plane = aeroplane_factory(
@@ -207,3 +203,8 @@ def test_cast_to_object_list_with_empty_response():
     result = Aeroplane.cast_to_object_list({})
 
     assert result == []
+
+def test_negative_altitude_is_allowed(aeroplane_factory):
+    plane = aeroplane_factory(baro_altitude=-100.0)
+
+    assert plane.baro_altitude == -100.0

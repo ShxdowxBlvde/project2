@@ -16,6 +16,6 @@ class BaseSaver(ABC):
         pass
 
     @abstractmethod
-    def delete_aeroplanes(self, criteria: dict[str, Any] | None = None) -> None:
+    def delete_aeroplanes(self, criteria: dict[str, Any]) -> None:
         """Удаляет информацию о самолете по указанным критериям"""
         pass
