@@ -2,3 +2,7 @@
 .venv/
 venv/
 __pycache__/
+111.py
+.coverage
+/htmlcov
+data/aeroplanes.json
