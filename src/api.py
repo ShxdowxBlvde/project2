@@ -14,7 +14,7 @@ class NominatimAPI(BaseAPI):
 
         super().__init__(base_url, headers)
 
-    def get_data(self, params: dict) -> dict:
+    def get_data(self, params: dict) -> list[dict[str, Any]]:
         """Получает данные о географическом положении"""
         response = requests.get(
             self.base_url,
@@ -38,7 +38,7 @@ class OpenSkyAPI(BaseAPI):
         }
         super().__init__(base_url, headers)
 
-    def get_data(self, params: dict) -> list[dict[str, Any]]:
+    def get_data(self, params: dict) -> dict[str, Any]:
         response = requests.get(
             self.base_url,
             params=params,
@@ -65,7 +65,7 @@ class AeroplanesAPI:
             'limit': 1
         }
         geo_data = self.nominatim.get_data(nominatim_params)
-        if not geo_data[0].get("boundingbox"):
+        if not geo_data or not geo_data[0].get("boundingbox"):
             raise ValueError(f"No data found for {country}")
 
         bbox = geo_data[0]['boundingbox']

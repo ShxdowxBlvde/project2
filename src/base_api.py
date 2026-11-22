@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 class BaseAPI(ABC):
     def __init__(self, base_url: str, headers: dict) -> None:
@@ -6,7 +7,7 @@ class BaseAPI(ABC):
         self.headers = headers
 
     @abstractmethod
-    def get_data(self, params: dict) -> dict:
+    def get_data(self, params: dict) -> Any:
         """Получение данных от API"""
         pass
 
