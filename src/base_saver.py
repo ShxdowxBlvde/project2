@@ -5,6 +5,7 @@ from src.aeroplane import Aeroplane
 
 class BaseSaver(ABC):
     """Абстрактный класс для работы с файлами о самолетах"""
+
     @abstractmethod
     def add_aeroplanes(self, aeroplanes: list[Aeroplane]) -> None:
         """Добавляет информацию о самолетах в файл"""

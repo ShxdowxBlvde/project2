@@ -1,7 +1,6 @@
 import pytest
 
 from src.aeroplane import Aeroplane
-from src.saver import JSONSaver
 
 
 def test_add_single_aeroplane(json_saver, aeroplane):
@@ -59,9 +58,7 @@ def test_get_aeroplanes_by_criteria(json_saver, aeroplane_list):
     """Проверяет фильтрацию самолётов по стране."""
     json_saver.add_aeroplanes(aeroplane_list)
 
-    result = json_saver.get_aeroplanes(
-        criteria={"origin_country": "Germany"}
-    )
+    result = json_saver.get_aeroplanes(criteria={"origin_country": "Germany"})
 
     assert len(result) == 1
     assert result[0].origin_country == "Germany"
@@ -71,9 +68,7 @@ def test_delete_aeroplane(json_saver, aeroplane_list):
     """Проверяет удаление самолёта по ICAO24."""
     json_saver.add_aeroplanes(aeroplane_list)
 
-    json_saver.delete_aeroplanes(
-        criteria={"icao24": "3c675a"}
-    )
+    json_saver.delete_aeroplanes(criteria={"icao24": "3c675a"})
 
     result = json_saver.get_aeroplanes()
 
@@ -85,9 +80,7 @@ def test_delete_nonexistent_aeroplane(json_saver, aeroplane_list):
     """Проверяет удаление по несуществующему критерию."""
     json_saver.add_aeroplanes(aeroplane_list)
 
-    json_saver.delete_aeroplanes(
-        criteria={"icao24": "ffffff"}
-    )
+    json_saver.delete_aeroplanes(criteria={"icao24": "ffffff"})
 
     result = json_saver.get_aeroplanes()
 

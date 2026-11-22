@@ -23,7 +23,6 @@ class JSONSaver(BaseSaver):
                 data = json.load(file)
                 return data if isinstance(data, list) else []
 
-
         except json.JSONDecodeError as error:
             raise ValueError(
                 f"Файл {self.__filename} содержит некорректный JSON"
@@ -64,9 +63,7 @@ class JSONSaver(BaseSaver):
 
         # Индексируем существующие записи по уникальному ICAO24
         planes_by_icao = {
-            item["icao24"]: item
-            for item in existing_data
-            if "icao24" in item
+            item["icao24"]: item for item in existing_data if "icao24" in item
         }
 
         for plane in aeroplanes:
@@ -74,9 +71,7 @@ class JSONSaver(BaseSaver):
 
         self._write_file(list(planes_by_icao.values()))
 
-    def get_aeroplanes(
-        self, criteria: dict[str, Any] | None = None
-    ) -> list[Aeroplane]:
+    def get_aeroplanes(self, criteria: dict[str, Any] | None = None) -> list[Aeroplane]:
         """Возвращает самолёты с учётом переданных критериев"""
 
         raw_data = self._read_file()
@@ -84,10 +79,7 @@ class JSONSaver(BaseSaver):
 
         for item in raw_data:
             if criteria is not None:
-                match = all(
-                    item.get(key) == value
-                    for key, value in criteria.items()
-                )
+                match = all(item.get(key) == value for key, value in criteria.items())
 
                 if not match:
                     continue
@@ -107,10 +99,7 @@ class JSONSaver(BaseSaver):
         filtered_data = [
             item
             for item in raw_data
-            if not all(
-                item.get(key) == value
-                for key, value in criteria.items()
-            )
+            if not all(item.get(key) == value for key, value in criteria.items())
         ]
 
         self._write_file(filtered_data)

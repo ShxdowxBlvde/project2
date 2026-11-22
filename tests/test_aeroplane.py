@@ -14,6 +14,7 @@ def test_create_aeroplane(aeroplane):
 
 # Проверка ICAO24
 
+
 def test_invalid_icao24_type(aeroplane_factory):
     with pytest.raises(TypeError):
         aeroplane_factory(icao24=123456)
@@ -30,6 +31,7 @@ def test_invalid_icao24_value(aeroplane_factory, icao24):
 
 # Проверка callsign
 
+
 def test_invalid_callsign_type(aeroplane_factory):
     with pytest.raises(TypeError):
         aeroplane_factory(callsign=123)
@@ -42,6 +44,7 @@ def test_none_callsign(aeroplane_factory):
 
 # Проверка страны
 
+
 def test_invalid_country_type(aeroplane_factory):
     with pytest.raises(TypeError):
         aeroplane_factory(origin_country=123)
@@ -53,6 +56,7 @@ def test_empty_country(aeroplane_factory):
 
 
 # Проверка числовых значений
+
 
 @pytest.mark.parametrize(
     "field",
@@ -77,7 +81,6 @@ def test_negative_velocity(aeroplane_factory):
         aeroplane_factory(velocity=-10)
 
 
-
 def test_none_numeric_values(aeroplane_factory):
     plane = aeroplane_factory(
         baro_altitude=None,
@@ -92,12 +95,14 @@ def test_none_numeric_values(aeroplane_factory):
 
 # Проверка инкапсуляции
 
+
 def test_properties_are_read_only(aeroplane):
     with pytest.raises(AttributeError):
         aeroplane.velocity = 300
 
 
 # Проверка сравнения высоты
+
 
 def test_compare_less_than(aeroplane, another_aeroplane):
     assert aeroplane < another_aeroplane
@@ -121,6 +126,7 @@ def test_compare_with_other_type(aeroplane):
 
 # Проверка идентичности самолётов
 
+
 def test_equal_aeroplanes(aeroplane, aeroplane_factory):
     another = aeroplane_factory(callsign="OTHER")
 
@@ -132,6 +138,7 @@ def test_not_equal_aeroplanes(aeroplane, another_aeroplane):
 
 
 # Проверка сравнения скорости
+
 
 def test_is_faster_than(aeroplane, another_aeroplane):
     assert aeroplane.is_faster_than(another_aeroplane)
@@ -155,13 +162,23 @@ def test_is_faster_with_invalid_object(aeroplane):
 
 # Проверка преобразования OpenSky
 
+
 def test_cast_to_object_list():
     response = {
         "states": [
             [
-                "3c675a", " DLH123 ", "Germany",
-                None, None, None, None,
-                10000.0, None, 250.0, None, 0.0
+                "3c675a",
+                " DLH123 ",
+                "Germany",
+                None,
+                None,
+                None,
+                None,
+                10000.0,
+                None,
+                250.0,
+                None,
+                0.0,
             ]
         ]
     }
@@ -179,9 +196,18 @@ def test_cast_to_object_list_skips_empty_country():
     response = {
         "states": [
             [
-                "3c675a", "DLH123", "",
-                None, None, None, None,
-                10000.0, None, 250.0, None, 0.0
+                "3c675a",
+                "DLH123",
+                "",
+                None,
+                None,
+                None,
+                None,
+                10000.0,
+                None,
+                250.0,
+                None,
+                0.0,
             ]
         ]
     }
@@ -203,6 +229,7 @@ def test_cast_to_object_list_with_empty_response():
     result = Aeroplane.cast_to_object_list({})
 
     assert result == []
+
 
 def test_negative_altitude_is_allowed(aeroplane_factory):
     plane = aeroplane_factory(baro_altitude=-100.0)

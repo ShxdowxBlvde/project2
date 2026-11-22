@@ -6,8 +6,8 @@ import pytest
 from src.api import NominatimAPI, OpenSkyAPI, AeroplanesAPI
 from src.aeroplane import Aeroplane
 
-
 # NominatimAPI
+
 
 @patch("src.api.requests.get")
 def test_nominatim_get_data(mock_get):
@@ -33,9 +33,7 @@ def test_nominatim_get_data(mock_get):
 @patch("src.api.requests.get")
 def test_nominatim_http_error(mock_get):
     mock_response = Mock()
-    mock_response.raise_for_status.side_effect = requests.HTTPError(
-        "HTTP error"
-    )
+    mock_response.raise_for_status.side_effect = requests.HTTPError("HTTP error")
     mock_get.return_value = mock_response
 
     api = NominatimAPI()
@@ -45,6 +43,7 @@ def test_nominatim_http_error(mock_get):
 
 
 # OpenSkyAPI
+
 
 @patch("src.api.requests.get")
 def test_opensky_get_data(mock_get):
@@ -72,9 +71,7 @@ def test_opensky_http_error(mock_get):
     import requests
 
     mock_response = Mock()
-    mock_response.raise_for_status.side_effect = requests.HTTPError(
-        "HTTP error"
-    )
+    mock_response.raise_for_status.side_effect = requests.HTTPError("HTTP error")
     mock_get.return_value = mock_response
 
     api = OpenSkyAPI()
@@ -85,20 +82,15 @@ def test_opensky_http_error(mock_get):
 
 # AeroplanesAPI
 
+
 def test_get_aeroplanes(aeroplane):
     api = AeroplanesAPI()
 
     api.nominatim.get_data = Mock(
-        return_value=[
-            {
-                "boundingbox": ["50.0", "55.0", "5.0", "10.0"]
-            }
-        ]
+        return_value=[{"boundingbox": ["50.0", "55.0", "5.0", "10.0"]}]
     )
 
-    api.opensky.get_data = Mock(
-        return_value={"states": []}
-    )
+    api.opensky.get_data = Mock(return_value={"states": []})
 
     result = api.get_aeroplanes("Germany")
 
@@ -124,20 +116,25 @@ def test_get_aeroplanes_returns_objects(aeroplane):
     api = AeroplanesAPI()
 
     api.nominatim.get_data = Mock(
-        return_value=[
-            {
-                "boundingbox": ["50.0", "55.0", "5.0", "10.0"]
-            }
-        ]
+        return_value=[{"boundingbox": ["50.0", "55.0", "5.0", "10.0"]}]
     )
 
     api.opensky.get_data = Mock(
         return_value={
             "states": [
                 [
-                    "3c675a", "DLH123", "Germany",
-                    None, None, None, None,
-                    10000.0, None, 250.0, None, 0.0
+                    "3c675a",
+                    "DLH123",
+                    "Germany",
+                    None,
+                    None,
+                    None,
+                    None,
+                    10000.0,
+                    None,
+                    250.0,
+                    None,
+                    0.0,
                 ]
             ]
         }
@@ -160,9 +157,7 @@ def test_get_aeroplanes_without_geo_data():
 
 def test_get_aeroplanes_without_boundingbox():
     api = AeroplanesAPI()
-    api.nominatim.get_data = Mock(
-        return_value=[{"display_name": "Germany"}]
-    )
+    api.nominatim.get_data = Mock(return_value=[{"display_name": "Germany"}])
 
     with pytest.raises(ValueError):
         api.get_aeroplanes("Germany")

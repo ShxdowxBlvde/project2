@@ -14,8 +14,7 @@ def get_top_n_by_altitude(
         raise ValueError("Количество самолётов должно быть больше нуля")
 
     planes_with_altitude = [
-        plane for plane in aeroplanes
-        if plane.baro_altitude is not None
+        plane for plane in aeroplanes if plane.baro_altitude is not None
     ]
 
     return sorted(
@@ -35,7 +34,8 @@ def get_by_origin_country(
         raise ValueError("Название страны не может быть пустым")
 
     return [
-        plane for plane in aeroplanes
+        plane
+        for plane in aeroplanes
         if plane.origin_country.casefold() == country.strip().casefold()
     ]
 
@@ -55,9 +55,7 @@ def display_aeroplanes(aeroplanes: list[Aeroplane]) -> None:
         )
 
         velocity = (
-            f"{plane.velocity} м/с"
-            if plane.velocity is not None
-            else "Нет данных"
+            f"{plane.velocity} м/с" if plane.velocity is not None else "Нет данных"
         )
 
         print(f"\nСамолёт №{index}")
@@ -77,8 +75,7 @@ def run_user_interface(
 
     while True:
         country = input(
-            "\nВведите название страны для поиска самолётов "
-            "или 0 для выхода: "
+            "\nВведите название страны для поиска самолётов " "или 0 для выхода: "
         ).strip()
 
         if country == "0":
@@ -119,9 +116,7 @@ def run_user_interface(
                     print(f"Некорректное значение: {error}")
 
             elif choice == "2":
-                origin_country = input(
-                    "Введите страну происхождения самолётов: "
-                )
+                origin_country = input("Введите страну происхождения самолётов: ")
 
                 try:
                     result = get_by_origin_country(

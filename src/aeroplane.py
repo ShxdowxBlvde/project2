@@ -2,6 +2,7 @@ from typing import Any
 from dataclasses import dataclass
 import string
 
+
 @dataclass(eq=False, init=False)
 class Aeroplane:
     __icao24: str
@@ -60,7 +61,6 @@ class Aeroplane:
         states = opensky_response.get("states") or []
         aeroplanes: list[Aeroplane] = []
 
-
         for state in states:
             if not state[2] or not state[2].strip():
                 continue
@@ -68,8 +68,8 @@ class Aeroplane:
             clean_data = raw_data.strip() if raw_data else None
 
             plane = cls(
-                icao24 = state[0],
-                callsign = clean_data,
+                icao24=state[0],
+                callsign=clean_data,
                 origin_country=state[2],
                 baro_altitude=state[7],
                 velocity=state[9],
@@ -83,7 +83,9 @@ class Aeroplane:
         if not isinstance(other, Aeroplane):
             return NotImplemented
         if self.baro_altitude is None or other.baro_altitude is None:
-            raise ValueError("Невозможно сравнить, т.к. у одного из самолетов высота = None")
+            raise ValueError(
+                "Невозможно сравнить, т.к. у одного из самолетов высота = None"
+            )
         return self.baro_altitude < other.baro_altitude
 
     def __gt__(self, other: object) -> bool:
@@ -91,7 +93,9 @@ class Aeroplane:
         if not isinstance(other, Aeroplane):
             return NotImplemented
         if self.baro_altitude is None or other.baro_altitude is None:
-            raise ValueError("Невозможно сравнить, т.к. у одного из самолетов высота = None")
+            raise ValueError(
+                "Невозможно сравнить, т.к. у одного из самолетов высота = None"
+            )
         return self.baro_altitude > other.baro_altitude
 
     def __eq__(self, other: object) -> bool:
@@ -105,7 +109,9 @@ class Aeroplane:
         if not isinstance(other, Aeroplane):
             raise TypeError("Сравнивать можно только с другим объектом Aeroplane")
         if self.velocity is None or other.velocity is None:
-            raise ValueError("Невозможно сравнить, т.к. у одного из самолетов скорость = None")
+            raise ValueError(
+                "Невозможно сравнить, т.к. у одного из самолетов скорость = None"
+            )
         return self.velocity > other.velocity
 
     def __post_init__(self) -> None:
@@ -115,7 +121,7 @@ class Aeroplane:
             raise TypeError("ICAO24 должен быть строкой")
 
         if len(self.icao24) != 6 or not all(
-                char in string.hexdigits for char in self.icao24
+            char in string.hexdigits for char in self.icao24
         ):
             raise ValueError("ICAO24 должен содержать 6 шестнадцатеричных символов")
 
@@ -139,13 +145,10 @@ class Aeroplane:
 
         for field_name, value in numeric_fields.items():
             if value is not None and (
-                    isinstance(value, bool) or not isinstance(value, (int, float))
+                isinstance(value, bool) or not isinstance(value, (int, float))
             ):
                 raise TypeError(f"{field_name} должен быть числом или None")
 
         # Проверка неотрицательной скорости
         if self.velocity is not None and self.velocity < 0:
             raise ValueError("Скорость не может быть отрицательной")
-
-
-
